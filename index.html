@@ -105,7 +105,7 @@
         <br>
         <h5>上傳圖片後將自動儲存</h5>
         <progress value="0" max="100" id="uploader">0%</progress>
-        <input type="file" id='fileButton' value="upload" style="width:65%"
+        <input type="file" id='fileButton' value="upload"
             onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
         <img id="blah" alt="your image" width="100" height="100" />
         <br>
@@ -133,23 +133,11 @@
             };
             firebase.initializeApp(config);
 
-            var Text1 = document.getElementById('Text1').value;
-            var Text2 = document.getElementById('Text2').value;
-            var Text3 = document.getElementById('Text3').value;
-            var Text4 = document.getElementById('Text4').value;
-            var Text5 = document.getElementById('Text5').value;
-            var Text6 = document.getElementById('Text6').value;
-            var dt = new Date().getFullYear();
-            var dt1 = new Date().getMonth();
-            var dt2 = new Date().getDate();
-            var dt3 = new Date().getHours();
-            var dt4 = new Date().getMinutes();
-            var dt5 = new Date().getSeconds();
+            //Create a node at firebase location to add locations as child keys
+            var locationsRef = firebase.database().ref("locations/123");
+
             var uploader = document.getElementById('uploader');
             var fileButton = document.getElementById('fileButton');
-            var wrongword="[1234567890`~!#$^&*()=|{}':;',\\[\\].<>/?~！#￥……&*（）——|{}【】‘；：”“'。，、？]‘'"
-            if(Text1==""||Text1==wrongword)
-        {}
             fileButton.addEventListener('change', function (e) {
                 var file = e.target.files[0];
                 var storageRef = firebase.storage().ref('photo /' + file.name);
@@ -175,7 +163,18 @@
                         console.log('File available at', downloadURL);
                         */
                         var downloadURL = task.snapshot.downloadURL;
-
+                        var Text1 = document.getElementById('Text1').value;
+                        var Text2 = document.getElementById('Text2').value;
+                        var Text3 = document.getElementById('Text3').value;
+                        var Text4 = document.getElementById('Text4').value;
+                        var Text5 = document.getElementById('Text5').value;
+                        var Text6 = document.getElementById('Text6').value;
+                        var dt = new Date().getFullYear();
+                        var dt1 = new Date().getMonth();
+                        var dt2 = new Date().getDate();
+                        var dt3 = new Date().getHours();
+                        var dt4 = new Date().getMinutes();
+                        var dt5 = new Date().getSeconds();
                         const newRecord = firebase.database().ref(locationsRef).push();
                         newRecord.set({
                             id: newRecord.key,
