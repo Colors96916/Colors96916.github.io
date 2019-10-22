@@ -7,7 +7,7 @@
 
     #map_canvas {
         height: 100%;
-        width: 84%;
+        width: 75%;
         margin: 0;
         padding: 0;
         float: right;
@@ -22,7 +22,7 @@
 
     #text {
         height: 100%;
-        width: 16%;
+        width: 25%;
         float: left;
         margin: 0;
         padding: 0;
@@ -35,10 +35,9 @@
 <head>
     <title></title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    <link rel="stylesheet" type='text/css' href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="/scss/html.css">
-    <link rel="stylesheet" href="Style.css" />
+    <link rel="stylesheet" type='text/css' href="Style.css" />
     <script src="https://kit.fontawesome.com/6a7990a2ca.js"></script>
 
     <meta charset="UTF-8">
@@ -92,23 +91,23 @@
         </div>
     </form>
     <div id="text">
-        品種：<input id='Text1' type="text">
+        品種：<br><input id='Text1' type="text" style="width:80%;">
         <br>
-        毛色：<input id='Text2' type="text">
+        毛色：<br><input id='Text2' type="text" style="width:80%;">
         <br>
-        貓或狗：<input id='Text3' type="text">
+        貓或狗：<br><input id='Text3' type="text" style="width:80%;">
         <br>
-        名字：<input id='Text4' type="text">
+        名字：<br><input id='Text4' type="text" style="width:80%;">
         <br>
-        目測性別：<input id='Text5' type="text">
+        目測性別：<br><input id='Text5' type="text" style="width:80%;">
         <br>
-        特徵：<input id='Text6' type="text">
+        特徵：<br><input id='Text6' type="text" style="width:80%;">
         <br>
         <h5>上傳圖片後將自動儲存</h5>
         <progress value="0" max="100" id="uploader">0%</progress>
-        <input type="file" id='fileButton' value="upload"
+        <input type="file" id='fileButton' value="upload" style="width:65%"
             onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-        <img id="blah" alt="your image" width="200" height="200" />
+        <img id="blah" alt="your image" width="100" height="100" />
         <br>
         <!--
         <script>
@@ -150,7 +149,7 @@
             var fileButton = document.getElementById('fileButton');
             var wrongword="[1234567890`~!#$^&*()=|{}':;',\\[\\].<>/?~！#￥……&*（）——|{}【】‘；：”“'。，、？]‘'"
             if(Text1==""||Text1==wrongword)
-        {alert("請填寫品種(只能輸入中文或英文)");}
+        {}
             fileButton.addEventListener('change', function (e) {
                 var file = e.target.files[0];
                 var storageRef = firebase.storage().ref('photo /' + file.name);
