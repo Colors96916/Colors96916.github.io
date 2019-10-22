@@ -36,6 +36,7 @@
 }
 .custom-file-upload {
     border: 1px solid #ccc;
+    background-color: lightgray;
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
@@ -264,7 +265,7 @@
                             bounds.extend(marker.getPosition());
                             marker.addListener('click', (function (data) {
                                 return function (e) {
-                                    infowindow.setContent("<div style='float:left;'><img src=" + data.url + "; style='width: 250px; height: 250px;'></div>" + "座標:" + this.getPosition().toUrlValue(6) + "<br>" + "品種:" + data.c + "<br>" + "毛色:" + data.d + "<br>" + "貓或狗:" + data.e + "<br>" + "名字:" + data.f + "<br>" + "性別:" + data.g + "<br>" + "特徵:" + data.h + "<br>" + "新增時間" + data.Year + "年" + data.Month + "月" + data.Date + "日;" + data.Hours + "時" + data.Minutes + "分" + data.Seconds);
+                                    infowindow.setContent("<div style='float:left;'><img src=" + data.url + "; style='width: 200px; height: 175px; float:left;'></div>" + "座標:" + this.getPosition().toUrlValue(6) + "<br>" + "品種:" + data.c + "<br>" + "毛色:" + data.d + "<br>" + "貓或狗:" + data.e + "<br>" + "名字:" + data.f + "<br>" + "性別:" + data.g + "<br>" + "特徵:" + data.h + "<br>" + "新增時間" + data.Year + "年" + data.Month + "月" + data.Date + "日;" + data.Hours + "時" + data.Minutes + "分" + data.Seconds);
                                     infowindow.open(map, this);
                                 }
 
