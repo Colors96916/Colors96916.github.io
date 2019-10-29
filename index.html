@@ -129,7 +129,8 @@
         <br>
         <img id="blah" alt="your image" width="100" height="100" />
         <br>
-        <!--<button id='btn'>更新餵食時間</button>
+        <button id='btn'>更新餵食時間</button>
+        <!--
         <script>
             var dt = new Date();
             document.write(dt);
@@ -222,7 +223,10 @@
 
             var btn = document.getElementById('btn');
             btn.onclick = function () {
-                var query = firebase.database().ref("locations/123").orderByChild("id").limitToLast(1);
+                var arr = snapshot.val();
+                var arr2 = Object.values(arr);
+                var key = arr2[14];
+                var query = firebase.database().ref("locations/123").orderByChild("id").equalTo(key);
                 query.on("child_added", function (snapshot) {
                     var dt = new Date().getFullYear();
                     var dt1 = new Date().getMonth();
@@ -231,6 +235,8 @@
                     var dt4 = new Date().getMinutes();
                     var dt5 = new Date().getSeconds();
                     snapshot.ref.update({
+                        a: lat,
+                        b: lng,
                         Year: dt,
                         Month: dt1 + 1,
                         Date: dt2,
@@ -239,6 +245,8 @@
                         Seconds: dt5
                     })
                 });
+                alert("Data changed");
+                window.location.reload();
             }
 
         </script>
@@ -294,7 +302,7 @@
                                     var arr2 = Object.values(arr);
                                     var key = arr2[14];
                                     console.log(key)
-                                    infowindow.setContent("<div style='float:left;'><img src=" + data.url + "; style='width: 170px; height: 170px; float:left;'></div>" + "座標:" + this.getPosition().toUrlValue(5) + "<br>" + "品種:" + data.c + "<br>" + "毛色:" + data.d + "<br>" + "貓或狗:" + data.e + "<br>" + "名字:" + data.f + "<br>" + "性別:" + data.g + "<br>" + "特徵:" + data.h + "<br>" + "新增時間" + data.Year + "年" + data.Month + "月" + data.Date + "日;" + data.Hours + "時" + data.Minutes + "分" + data.Seconds+"秒");
+                                    infowindow.setContent("<div style='float:left;'><img src=" + data.url + "; style='width: 170px; height: 170px; float:left;'></div>" + " " +"座標:" + this.getPosition().toUrlValue(5) + "<br>" + "品種:" + data.c + "<br>" + "毛色:" + data.d + "<br>" + "貓或狗:" + data.e + "<br>" + "名字:" + data.f + "<br>" + "性別:" + data.g + "<br>" + "特徵:" + data.h + "<br>" + "新增時間" + data.Year + "年" + data.Month + "月" + data.Date + "日;" + data.Hours + "時" + data.Minutes + "分" + data.Seconds + "秒");
                                     infowindow.open(map, this);
                                 }
 
