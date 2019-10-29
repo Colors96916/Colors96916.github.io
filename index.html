@@ -29,25 +29,28 @@
         text-align: center;
         background-color: pink;
     }
+
     input[type="file"] {
-    position: fixed;
-    right: 100%;
-    bottom: 100%;
-}
-.custom-file-upload {
-    border: 1px solid #ccc;
-    background-color: lightgray;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
+        position: fixed;
+        right: 100%;
+        bottom: 100%;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        background-color: lightgray;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
 </style>
 
 
 <head>
     <title></title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type='text/css' href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    <link rel="stylesheet" type='text/css'
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" type='text/css' href="Style.css" />
     <script src="https://kit.fontawesome.com/6a7990a2ca.js"></script>
@@ -119,13 +122,14 @@
         <progress value="0" max="100" id="uploader" style="width:75%;">0%</progress>
         <br>
         <label for="fileButton" class="custom-file-upload">
-                <i class="fa fa-cloud-upload"></i> Upload File
-            </label>
-            <input type="file" id='fileButton' value="upload"
+            <i class="fa fa-cloud-upload"></i> Upload File
+        </label>
+        <input type="file" id='fileButton' value="upload"
             onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
         <br>
         <img id="blah" alt="your image" width="100" height="100" />
         <br>
+        <button id='btn'>更新餵食時間</button>
         <!--
         <script>
             var dt = new Date();
@@ -216,10 +220,32 @@
                     }
                 );
             });
+
+            var btn = document.getElementById('btn');
+            btn.onclick = function () {
+                var query = firebase.database().ref("locations/123").orderByChild("id").limitToLast(1);
+                query.on("child_added", function (snapshot) {
+                    var dt = new Date().getFullYear();
+                    var dt1 = new Date().getMonth();
+                    var dt2 = new Date().getDate();
+                    var dt3 = new Date().getHours();
+                    var dt4 = new Date().getMinutes();
+                    var dt5 = new Date().getSeconds();
+                    snapshot.ref.update({
+                        Year: dt,
+                        Month: dt1 + 1,
+                        Date: dt2,
+                        Hours: dt3,
+                        Minutes: dt4,
+                        Seconds: dt5
+                    })
+                });
+            }
+
         </script>
     </div>
     <div id="map_canvas">
-        <script>
+        <script language="JavaScript">
             function initialize() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
@@ -265,11 +291,42 @@
                             bounds.extend(marker.getPosition());
                             marker.addListener('click', (function (data) {
                                 return function (e) {
+                                    var arr = snapshot.val();
+                                    var arr2 = Object.values(arr);
+                                    var key = arr2[14];
+                                    console.log(key)
                                     infowindow.setContent("<div style='float:left;'><img src=" + data.url + "; style='width: 170px; height: 170px; float:left;'></div>" + "座標:" + this.getPosition().toUrlValue(6) + "<br>" + "品種:" + data.c + "<br>" + "毛色:" + data.d + "<br>" + "貓或狗:" + data.e + "<br>" + "名字:" + data.f + "<br>" + "性別:" + data.g + "<br>" + "特徵:" + data.h + "<br>" + "新增時間" + data.Year + "年" + data.Month + "月" + data.Date + "日;" + data.Hours + "時" + data.Minutes + "分" + data.Seconds);
                                     infowindow.open(map, this);
                                 }
 
                             }(data)));
+                            marker.addListener("dblclick", function (e) {
+                                var arr = snapshot.val();
+                                var arr2 = Object.values(arr);
+                                var key = arr2[14];
+                                var query = firebase.database().ref("locations/123").orderByChild("id").equalTo(key);
+                                query.on("child_added", function (snapshot) {
+                                    var dt = new Date().getFullYear();
+                                    var dt1 = new Date().getMonth();
+                                    var dt2 = new Date().getDate();
+                                    var dt3 = new Date().getHours();
+                                    var dt4 = new Date().getMinutes();
+                                    var dt5 = new Date().getSeconds();
+                                    snapshot.ref.update({
+                                        a: lat,
+                                        b: lng,
+                                        Year: dt,
+                                        Month: dt1 + 1,
+                                        Date: dt2,
+                                        Hours: dt3,
+                                        Minutes: dt4,
+                                        Seconds: dt5
+                                    })
+                                });
+                                alert("Data changed");
+                                window.location.reload();
+                                //setTimeout('myrefresh()', 1000); //指定1秒重新整理一次
+                            });
                             //展示所有釘子
                             //map.fitBounds(bounds);
                         });
