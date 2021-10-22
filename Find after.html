@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<style>
+  .AA {
+    font-size: 20px;
+
+  }
+</style>
+
+<head>
+  <title>協尋浪浪</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="/scss/html.css">
+  <link rel="stylesheet" href="Style.css" />
+  <script src="https://kit.fontawesome.com/6a7990a2ca.js"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase.js"></script>
+  <script src='https://cdn.firebase.com/js/client/1.0.17/firebase.js'></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-xs navbar-custom">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-xs navbar-light navbar-custom">
+        <a class="navbar-brand" href="Home after.html">Welcome to 浪浪の家</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="Home after.html">首頁 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="feed after.html">餵食</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Find after.html">協尋</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Animal after.html">協尋浪浪</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="information after.html">醫療資訊</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="message after.html">討論分享區</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Home before.html">登出</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+  <div id="mainContent">
+  </div>
+  <div style="text-align:center;" line-height:30px;>
+
+    <!--<form name="myForm" onsubmit="validateForm()" method="POST"></form>-->
+    <span style="font-family:Microsoft JhengHei;color:lightpink">寵物品種<input type="text" name="species" id="species"><br>
+      <br>
+      寵物姓名<input type="text" name="petname" id="petname"><br>
+      <br>
+      寵物性別<input type="radio" checked="true" name="gender" value="公" id="Boy">公&nbsp;
+      <input type="radio" name="gender" value="母" id="Girl">母<br>
+      <br>
+      走失地點<input type="text" name="location" id="location"><br>
+      <br>
+      聯絡電話<input type="text" name="tellphone" id="tellphone"><br>
+      <br>
+      電子信箱<input type="text" onblur=isEmail(this.value) name="email" id="email"><br>
+      <br>
+      備註補充<textarea name="more" id="more"></textarea><br>
+      <br>
+      <h5>上傳圖片後將自動送出</h5>
+      <progress value="0" max="100" id="uploader" style="width:30%;">0%</progress>
+      <br>
+      <input type="file" id='fileButton' value="upload"
+        onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+      <br>
+      <img id="blah" alt="your image" width="25%" height="25%" />
+      <br>
+      <input type="button" value="查詢公告" style="background-color:lightpink;width:120px;height:40px;"
+        onclick="location.href='Animal after.html'">
+      <input type="button" value="回首頁" style="background-color:lightpink;width:120px;height:40px;"
+        onclick="location.href='Home after.html'">
+    </span>
+  </div>
+  <!--</form>-->
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyAYbBkqZPi8rlow4Dzwbb_5IGSHDRmW8_Y",
+      authDomain: "board-1-85e46.firebaseapp.com",
+      databaseURL: "https://board-1-85e46.firebaseio.com",
+      projectId: "board-1-85e46",
+      storageBucket: "board-1-85e46.appspot.com",
+      messagingSenderId: "429327789249",
+      appId: "1:429327789249:web:1b2f597e86f94ed2"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var FindRef = firebase.database().ref("/Find");
+    var uploader = document.getElementById('uploader');
+    var fileButton = document.getElementById('fileButton');
+    fileButton.addEventListener('change', function (e) {
+
+      var file = e.target.files[0];
+      var storageRef = firebase.storage().ref('photo /' + file.name);
+      var task = storageRef.put(file);
+
+      task.on('state_changed', function progress(snapshot) {
+        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        uploader.value = percentage;
+      },
+        function error(err) {
+          console.log('error')
+          console.log(err)
+        },
+        function () {
+          var species = document.getElementById('species').value;
+          var petname = document.getElementById('petname').value;
+          var location = document.getElementById('location').value;
+          var tellphone = document.getElementById('tellphone').value;
+          var email = document.getElementById('email').value;
+          var more = document.getElementById('more').value;
+          var result = "";
+          $("input[type=radio]:checked").each(function () {
+            result = $(this).val();
+          });
+          var date = new Date();
+          ms = new Date().getTime();
+          var y = date.getFullYear();
+          var mm = date.getMonth();
+          var d = date.getDate();
+          var h = date.getHours();
+          var m = date.getMinutes();
+          var s = date.getSeconds();
+          if (h < 10) {
+            h = '0' + h;
+          }
+          if (m < 10) {
+            m = '0' + m;
+          }
+          if (s < 10) {
+            s = '0' + s;
+          }
+          var now = y + '年' + (mm + 1) + '月' + d + '日' + h + ':' + m + ':' + s;
+          var downloadURL = task.snapshot.downloadURL;
+          if (species !== "" && petname !== "" && location !== "" && tellphone !== "" && email !== "") {
+            const newRecord = firebase.database().ref(FindRef).push();
+            newRecord.set({
+              id: newRecord.key,
+              species: species,
+              petname: petname,
+              result: result,
+              location: location,
+              tellphone: tellphone,
+              email: email,
+              more: more,
+              time: now,
+              url: downloadURL,
+            });
+            alert("上傳成功並完成送出");
+            console.log(newRecord.key)
+          }
+
+          else {
+            if (species == "") { alert("請填寫品種(只能輸入中文或英文)"); }
+            if (petname == "") { alert("請填寫姓名(只能輸入中文或英文)"); }
+            if (location == "") { alert("請填寫走失地點"); }
+            if (tellphone == "") { alert("請填寫聯絡電話"); }
+            if (email == "") { alert("不是一個有效的 e-mail 地址"); }
+            window.location.reload();
+          }
+
+        }
+
+      );
+    });
+  </script>
+<script language="javascript" runat="server">
+  function isEmail(strEmail) {
+    if (strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/) != -1)
+      return true;
+    else
+      alert("信箱格式錯誤!!");
+  }
+</script>
+
+  <footer class="text-md-left text-center p-4 bg-dark text-light">
+    <div class="container">
+      <div class="row">
+        <div class="my-3 col-lg-4 col-md-6">
+          <h3>聯絡我們</h3>
+          <script>
+            var dt = new Date();
+            document.write(dt);
+          </script>
+          <p class="text-muted"></p>
+          <p class="my-3">
+            <a href="https://www.google.com.tw/maps/place/%E9%8A%98%E5%82%B3%E5%A4%A7%E5%AD%B8-%E6%A1%83%E5%9C%92%E9%BE%9C%E5%B1%B1%E6%A0%A1%E5%8D%80/@24.9863989,121.3211327,14.5z/data=!4m5!3m4!1s0x34681e8f88001f51:0xde8e62ebe5442d75!8m2!3d24.9844923!4d121.3423687?hl=zh-TW"
+              target="blank" class="text-muted">桃園市龜山區<br>德明路, 銘傳大學</a>
+          </p>
+        </div>
+        <div>
+
+        </div>
+        <div class="col-lg-1"> </div>
+        <div class="my-3 col-lg-3">
+          <h3>Follow</h3>
+          <a href="https://www.facebook.com" target="blank"><i class="fab fa-facebook fa-3x"></i></a>
+          <a href="https://www.instagram.com" target="blank"><i class="fab fa-instagram fa-3x"></i></a>
+          <a href="https://www.youtube.com" target="blank"><i class="fab fa-youtube fa-3x"></i></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <!-- Script: Smooth scrolling between anchors in the same page -->
+  <script src="js/smooth-scroll.js"></script>
+</body>
+
+</html>

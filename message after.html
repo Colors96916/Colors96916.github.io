@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<style>
+  .AA {
+    font-size: 20px;
+  }
+
+  body {
+    text-align: center;
+  }
+
+  #c1 {
+    margin: 0 auto;
+    width: 40%;
+    text-align: left;
+  }
+</style>
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>討論分享區</title>
+  <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="/scss/html.css">
+  <link rel="stylesheet" href="Style.css" />
+  <script src="https://kit.fontawesome.com/6a7990a2ca.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="css/ply.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .github-corner:hover .octo-arm {
+      animation: octocat-wave 560ms ease-in-out
+    }
+
+    @keyframes octocat-wave {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      20%,
+      60% {
+        transform: rotate(-25deg)
+      }
+
+      40%,
+      80% {
+        transform: rotate(10deg)
+      }
+    }
+
+    @media (max-width: 500px) {
+      .github-corner:hover .octo-arm {
+        animation: none
+      }
+
+      .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+      }
+    }
+
+    @media (max-width:575px) {
+      .hidden-xs-down {
+        display: none !important
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-xs navbar-custom">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-xs navbar-light navbar-custom">
+        <a class="navbar-brand" href="Home after.html">Welcome to 浪浪の家</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="Home after.html">首頁 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="feed after.html">餵食</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Find after.html">協尋</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Animal after.html">協尋浪浪</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="information after.html">醫療資訊</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="message after.html">討論分享區</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Home before.html">登出</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+  <ul class="nav nav-pills mb-1 justify-content-center" id="my-nav-bar" role="tablist">
+    <li class="nav-item mx-md-5">
+      <a class="nav-link active" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab"
+        aria-selected="true">留言板</a>
+    </li>
+  </ul>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5 mb-3">
+        <input type="text" class="form-control p-3" id="add-text-bar" aria-label="Task input" placeholder="此處新增留言">
+      </div>
+    </div>
+    <div class="tab-content row justify-content-center">
+      <div class="col-md-5 tab-pane fade show active mb-3" id="todo_content" role="tabpanel"
+        aria-labelledby="todo_content"></div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="js/Sortable.js"></script>
+  <script src="js/Ply.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    $(document).ready(function () {
+      get_start.init();
+    });
+  </script>
+
+
+  <div id="mainContent">
+  </div>
+  <footer class="text-md-left text-center p-4 bg-dark text-light">
+    <div class="container">
+      <div class="row">
+        <div class="my-3 col-lg-4 col-md-6">
+          <h3>聯絡我們</h3>
+          <script>
+            var dt = new Date();
+            document.write(dt);
+          </script>
+          <p class="text-muted"></p>
+          <p class="my-3">
+            <a href="https://www.google.com.tw/maps/place/%E9%8A%98%E5%82%B3%E5%A4%A7%E5%AD%B8-%E6%A1%83%E5%9C%92%E9%BE%9C%E5%B1%B1%E6%A0%A1%E5%8D%80/@24.9863989,121.3211327,14.5z/data=!4m5!3m4!1s0x34681e8f88001f51:0xde8e62ebe5442d75!8m2!3d24.9844923!4d121.3423687?hl=zh-TW"
+              target="blank" class="text-muted">桃園市龜山區<br>德明路, 銘傳大學</a>
+          </p>
+        </div>
+        <div>
+
+        </div>
+        <div class="col-lg-1"> </div>
+        <div class="my-3 col-lg-3">
+          <h3>Follow</h3>
+          <a href="https://www.facebook.com" target="blank"><i class="fab fa-facebook fa-3x"></i></a>
+          <a href="https://www.instagram.com" target="blank"><i class="fab fa-instagram fa-3x"></i></a>
+          <a href="https://www.youtube.com" target="blank"><i class="fab fa-youtube fa-3x"></i></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <!-- Script: Smooth scrolling between anchors in the same page -->
+  <script src="js/smooth-scroll.js"></script>
+
+
+</body>
+
+</html>
