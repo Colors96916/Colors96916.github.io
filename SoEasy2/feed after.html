@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<style>
+    .AA {
+        font-size: 20px;
+    }
+
+    #map_canvas {
+        height: 100%;
+        width: 75%;
+        margin: 0;
+        padding: 0;
+        float: right;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #text {
+        height: 100%;
+        width: 25%;
+        float: left;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        background-color: pink;
+    }
+
+    input[type="file"] {
+        position: fixed;
+        right: 100%;
+        bottom: 100%;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        background-color: lightgray;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+</style>
+
+
+<head>
+    <title>餵食浪浪</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type='text/css'
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" type='text/css' href="Style.css" />
+    <script src="https://kit.fontawesome.com/6a7990a2ca.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+
+<body>
+        <nav class="navbar navbar-expand-xs navbar-custom">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                    </ul>
+                </div>
+            </nav>
+        
+            <nav class="navbar navbar-expand-xs navbar-light navbar-custom">
+                <a class="navbar-brand" href="Home after.html">Welcome to 浪浪の家</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="Home after.html">首頁 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="feed after.html">餵食</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Find after.html">協尋</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Animal after.html">協尋浪浪</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="information after.html">醫療資訊</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="message after.html">討論分享區</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home before.html">登出</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+    <div id="text">
+        品種：<br><input id='Text1' type="text" style="width:80%;">
+        <br>
+        毛色：<br><input id='Text2' type="text" style="width:80%;">
+        <br>
+        貓或狗：<br><input id='Text3' type="text" style="width:80%;">
+        <br>
+        名字：<br><input id='Text4' type="text" style="width:80%;">
+        <br>
+        目測性別：<br><input id='Text5' type="text" style="width:80%;">
+        <br>
+        特徵：<br><input id='Text6' type="text" style="width:80%;">
+        <br>
+        <h5>上傳圖片後將自動儲存</h5>
+        <progress value="0" max="100" id="uploader" style="width:75%;">0%</progress>
+        <br>
+        <label for="fileButton" class="custom-file-upload">
+            <i class="fa fa-cloud-upload"></i> Upload File
+        </label>
+        <input type="file" id='fileButton' value="upload"
+            onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+        <br>
+        <img id="blah" alt="your image" width="100" height="100" />
+        <br>
+        <!--
+        <script>
+            var dt = new Date();
+            document.write(dt);
+        </script>
+        -->
+        <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase.js"></script>
+        <script src='https://cdn.firebase.com/js/client/1.0.17/firebase.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+
+        <script src="https://maps.googleapis.com/maps/api/js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+        <script src="https://cdn.firebase.com/libs/geofire/4.1.2/geofire.min.js"></script>
+        <script>
+            var firebaseConfig = {
+                apiKey: "AIzaSyAYbBkqZPi8rlow4Dzwbb_5IGSHDRmW8_Y",
+                authDomain: "board-1-85e46.firebaseapp.com",
+                databaseURL: "https://board-1-85e46.firebaseio.com",
+                projectId: "board-1-85e46",
+                storageBucket: "board-1-85e46.appspot.com",
+                messagingSenderId: "429327789249",
+                appId: "1:429327789249:web:1b2f597e86f94ed2"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            //Create a node at firebase location to add locations as child keys
+            var locationsRef = firebase.database().ref("locations/123");
+
+            var uploader = document.getElementById('uploader');
+            var fileButton = document.getElementById('fileButton');
+            fileButton.addEventListener('change', function (e) {
+                var file = e.target.files[0];
+                var storageRef = firebase.storage().ref('photo /' + file.name);
+                var task = storageRef.put(file);
+                task.on('state_changed', function progress(snapshot) {
+                    var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    uploader.value = percentage;
+                },
+                    function error(err) {
+                        console.log('error')
+                        console.log(err)
+                    },
+                    function () {
+                        /*
+                        var postkey = firebase.database().ref("locations/123/img").push().key;
+                        var downloadURL=task.snapshot.downloadURL;
+                        var updates={};
+                        var postdata={
+                            url:downloadURL
+                        };
+                        updates["/locations/123/"+newRecord]=postdata;
+                        firebase.database().ref().update(updates);
+                        console.log('File available at', downloadURL);
+                        */
+                        var downloadURL = task.snapshot.downloadURL;
+                        var Text1 = document.getElementById('Text1').value;
+                        var Text2 = document.getElementById('Text2').value;
+                        var Text3 = document.getElementById('Text3').value;
+                        var Text4 = document.getElementById('Text4').value;
+                        var Text5 = document.getElementById('Text5').value;
+                        var Text6 = document.getElementById('Text6').value;
+                        var dt = new Date().getFullYear();
+                        var dt1 = new Date().getMonth();
+                        var dt2 = new Date().getDate();
+                        var dt3 = new Date().getHours();
+                        var dt4 = new Date().getMinutes();
+                        var dt5 = new Date().getSeconds();
+                        const newRecord = firebase.database().ref(locationsRef).push();
+                        newRecord.set({
+                            id: newRecord.key,
+                            a: lat,
+                            b: lng,
+                            c: Text1,
+                            d: Text2,
+                            e: Text3,
+                            f: Text4,
+                            g: Text5,
+                            h: Text6,
+                            Year: dt,
+                            Month: dt1 + 1,
+                            Date: dt2,
+                            Hours: dt3,
+                            Minutes: dt4,
+                            Seconds: dt5,
+                            url: downloadURL
+                        });
+                        alert("Data storaged");
+                        console.log(newRecord.key)
+                    }
+                );
+            });
+/*
+                                    var btn = document.getElementById('btn');
+                                    btn.onclick = function () {
+                                        var arr = snapshot.val();
+                                        var arr2 = Object.values(arr);
+                                        var key = arr2[14];
+                                        var query = firebase.database().ref("locations/123").orderByChild("id").equalTo(key);
+                                        query.on("child_added", function (snapshot) {
+                                            var dt = new Date().getFullYear();
+                                            var dt1 = new Date().getMonth();
+                                            var dt2 = new Date().getDate();
+                                            var dt3 = new Date().getHours();
+                                            var dt4 = new Date().getMinutes();
+                                            var dt5 = new Date().getSeconds();
+                                            snapshot.ref.update({
+                                                a: lat,
+                                                b: lng,
+                                                Year: dt,
+                                                Month: dt1 + 1,
+                                                Date: dt2,
+                                                Hours: dt3,
+                                                Minutes: dt4,
+                                                Seconds: dt5
+                                            })
+                                        });
+                                        alert("Data changed");
+                                        window.location.reload();
+                                    }
+                        */
+        </script>
+    </div>
+    <div id="map_canvas">
+        <script language="JavaScript">
+            function initialize() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        lat = position.coords.latitude;
+                        lng = position.coords.longitude;
+                        var pos = { lat: lat, lng: lng };
+
+                        var infowindow = new google.maps.InfoWindow();
+                        var map = new google.maps.Map(
+                            document.getElementById("map_canvas"), {
+                            center: { lat: lat, lng: lng },
+                            zoom: 17,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        });
+
+                        var locationsRef = firebase.database().ref("locations/123");
+                        var bounds = new google.maps.LatLngBounds();
+                        locationsRef.on('child_added', function (snapshot) {
+                            var data = snapshot.val();
+                            console.log(data);
+                            var marker = new google.maps.Marker({
+                                position: {
+                                    lat: data.a,
+                                    lng: data.b
+                                },
+                                icon: "Images/icons8-dog.png",
+                                map: map
+                            });
+                            /*var html = 
+             "經度座標: <input type='text' name='Lat' id='Lat' readonly='readonly' value="+data.a+"></br>" +
+             "緯度座標: <input type='text' name='Lng' id='Lng' readonly='readonly' value="+data.b+"></br>" +
+             "品種: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='text' name='Txt1' id='Txt1' value="+data.c+"></br>" +
+             "毛色: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='text' name='Txt2' id='Txt2' value="+data.d+"></br>" +
+             "貓或狗: &nbsp&nbsp&nbsp&nbsp<input type='text' name='Txt3' id='Txt3' value="+data.e+"></br>" +
+             "名字: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='text' name='Txt4' id='Txt4' value="+data.f+"></br>" +
+             "性別: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='text' name='Txt5' id='Txt5' value="+data.g+"></br>" +
+             "特徵: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type='text' name='Txt6' id='Txt6' value="+data.h+"></br>" +
+             "新增時間: <input type='text' name='Time' id='Time' readonly='readonly' value="+data.Year+"/"+data.Month+"/"+data.Date+";"+data.Hours+":"+data.Minutes+":"+data.Seconds+"></br>" +
+                 "<input type='submit' id='btnChange' value='修改後儲存' /></br>";
+                        infowindow = new google.maps.InfoWindow({
+                         content: html
+                             }); */
+
+                            bounds.extend(marker.getPosition());
+                            marker.addListener('click', (function (data) {
+                                return function (e) {
+                                    var arr = snapshot.val();
+                                    var arr2 = Object.values(arr);
+                                    var key = arr2[14];
+                                    console.log(key)
+                                    infowindow.setContent("<div style='float:left;'><img src=" + data.url + "; style='width: 170px; height: 170px; float:left;'></div>" + "座標:" + this.getPosition().toUrlValue(5) + "<br>" + "品種:" + data.c + "<br>" + "毛色:" + data.d + "<br>" + "貓或狗:" + data.e + "<br>" + "名字:" + data.f + "<br>" + "性別:" + data.g + "<br>" + "特徵:" + data.h + "<br>" + "最後餵食時間" + data.Year + "年" + data.Month + "月" + data.Date + "日;" + data.Hours + "時" + data.Minutes + "分" + data.Seconds + "秒");
+                                    infowindow.open(map, this);
+                                }
+
+                            }(data)));
+                            marker.addListener("dblclick", function (e) {
+                                var arr = snapshot.val();
+                                var arr2 = Object.values(arr);
+                                var key = arr2[14];
+                                var query = firebase.database().ref("locations/123").orderByChild("id").equalTo(key);
+                                query.on("child_added", function (snapshot) {
+                                    var dt = new Date().getFullYear();
+                                    var dt1 = new Date().getMonth();
+                                    var dt2 = new Date().getDate();
+                                    var dt3 = new Date().getHours();
+                                    var dt4 = new Date().getMinutes();
+                                    var dt5 = new Date().getSeconds();
+                                    snapshot.ref.update({
+                                        a: lat,
+                                        b: lng,
+                                        Year: dt,
+                                        Month: dt1 + 1,
+                                        Date: dt2,
+                                        Hours: dt3,
+                                        Minutes: dt4,
+                                        Seconds: dt5
+                                    })
+                                });
+                                alert("Data changed");
+                                window.location.reload();
+                                //setTimeout('myrefresh()', 1000); //指定1秒重新整理一次
+                            });
+                            //展示所有釘子
+                            //map.fitBounds(bounds);
+                        });
+                    });
+                }
+            }
+            google.maps.event.addDomListener(window, "load", initialize);
+            alert("溫馨提醒：\n第一次餵食浪浪時，先新增資料於左邊欄位，新增且餵食後請雙擊圖釘");
+        </script>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-noIUiDieN7p6P3eIGRXpWmujZyxwvy0&callback=initMap">
+    </script>
+    <div id="mainContent">
+    </div>
+    <footer class="text-md-left text-center p-4 bg-dark text-light">
+        <div class="container">
+            <div class="row">
+                <div class="my-3 col-lg-4 col-md-6">
+                    <h3>聯絡我們</h3>
+                    <script>
+                        var dt = new Date();
+                        document.write(dt);
+                    </script>
+                    <p class="text-muted"></p>
+                    <p class="my-3">
+                        <a href="https://goo.gl/maps/ayn28vkB5F92" target="blank" class="text-muted">桃園市龜山區<br>德明路,
+                            銘傳大學</a>
+                    </p>
+                </div>
+                <div>
+
+                </div>
+                <div class="col-lg-1"> </div>
+                <div class="my-3 col-lg-3">
+                    <h3>Follow</h3>
+                    <a href="https://www.facebook.com" target="blank"><i class="fab fa-facebook fa-3x"></i></a>
+                    <a href="https://www.instagram.com" target="blank"><i class="fab fa-instagram fa-3x"></i></a>
+                    <a href="https://www.youtube.com" target="blank"><i class="fab fa-youtube fa-3x"></i></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <!-- Script: Smooth scrolling between anchors in the same page -->
+    <script src="js/smooth-scroll.js"></script>
+
+
+
+</body>
+
+</html>

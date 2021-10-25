@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Kodinger">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>註冊</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/my-login.css">
+	<style type="text/css">
+		#ccc {
+			margin: 0 auto;
+			width: 80%;
+		}
+	</style>
+</head>
+
+<body class="my-login-page">
+	<section class="h-100">
+		<div class="container h-100" id="ccc">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+					<div class="brand">
+						<img src="Images/palm.jpg">
+						<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+						<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+						<script>
+							// 初始化 Firebase
+							var config = {
+								apiKey: "AIzaSyB3J5E5AXszEz6_J2wWZcWFBpuA5U5A2DI",
+								authDomain: "newtest-518e8.firebaseapp.com",
+								databaseURL: "https://newtest-518e8.firebaseio.com",
+								storageBucket: "newtest-518e8.appspot.com",
+							};
+							firebase.initializeApp(config);
+
+							var db = firebase.database();
+
+						</Script>
+
+					</div>
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">註冊</h4>
+							<div method="POST" class="my-login-validation" novalidate="">
+								<div class="form-group">
+									<label for="name">姓名</label>
+									<input id="name" type="text" class="form-control" name="name" required
+										placeholder="Name">
+								</div>
+
+								<div class="form-group">
+									<label for="email">E-Mail 信箱</label>
+									<input type="text" id="create_email" class="form-control" name="email" required
+										placeholder="Email">
+								</div>
+
+								<div class="form-group">
+									<label for="password">密碼</label>
+									<input type="password" id="create_password" class="form-control" name="password"
+										required placeholder="password">
+								</div>
+
+
+
+								<div class="form-group m-0">
+									<button type="submit" id="create_user" class="btn btn-primary btn-block">
+										註冊
+									</button>
+								</div>
+								<script>
+									var create_error_func = function (error) {
+										var errorCode = error.code;
+										var errorMessage = error.message;
+										alert("建立失敗:" + errorMessage);
+									}
+									var create_success_func = function (error) {
+										alert("建立成功");
+									}
+
+									$(document).ready(function () {
+										$("#create_user").click(function () {
+											var name = $('#name').val();
+											var email = $('#create_email').val();
+											var password = $('#create_password').val();
+											firebase.auth().createUserWithEmailAndPassword(email, password).then(create_success_func).catch(create_error_func);
+
+											db.ref("/會員帳號資料").push({
+
+												name: name,
+												email: email,
+												password: password
+											})
+
+
+
+										});
+
+									});
+
+
+								</script>
+								<div class="mt-4 text-center">
+									<a href="index.html">去登入！</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="footer">
+						Copyright &copy; 2019 &mdash; 浪浪の家
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="js/my-login.js"></script>
+	<script>
+		// Your web app's Firebase configuration
+		var firebaseConfig = {
+			apiKey: "AIzaSyDW09TKNQTWzQSdLXadKUrh4B9ciEpwDB8",
+			authDomain: "my-new-project-f39fe.firebaseapp.com",
+			databaseURL: "https://my-new-project-f39fe.firebaseio.com",
+			projectId: "my-new-project-f39fe",
+			storageBucket: "my-new-project-f39fe.appspot.com",
+			messagingSenderId: "557151862788",
+			appId: "1:557151862788:web:15b30a5b33b3bc08"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+	</script>
+</body>
+
+</html>

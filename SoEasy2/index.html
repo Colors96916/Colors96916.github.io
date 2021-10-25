@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Kodinger">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>歡迎登入</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/my-login.css">
+	<style type="text/css">
+		#bbb {
+			margin: 0 auto;
+			width: 80%;
+		}
+	</style>
+</head>
+
+<body class="my-login-page">
+	<section class="h-100">
+		<div class="container h-100" id="bbb">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+					<div class="brand">
+						<img src="Images/palm.jpg">
+
+
+
+					</div>
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">登入</h4>
+							<div method="POST" class="my-login-validation" novalidate="">
+								<div class="form-group">
+									<label for="email">E-Mail 信箱</label>
+									<input type="text" id="login_email" class="form-control" name="email" value=""
+										required placeholder="Email">
+
+								</div>
+
+								<div class="form-group">
+									<label for="password">密碼
+										<a href="forgot.html" class="float-right">
+											忘記密碼？
+										</a>
+									</label>
+									<input type="password" id="login_password" class="form-control" name="password"
+										required placeholder="password">
+
+								</div>
+
+								<div class="form-group">
+									<div class="custom-checkbox custom-control">
+										<input type="checkbox" name="remember" id="remember"
+											class="custom-control-input">
+										<label for="remember" class="custom-control-label">記住我</label>
+									</div>
+								</div>
+
+								<div class="form-group m-0">
+									<button id="login_user">
+										登入
+									</button>
+								</div>
+								<script>
+
+								</script>
+								<div class="mt-4 text-center">
+									還沒擁有帳號嗎？<a href="register.html">註冊</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="footer">
+						Copyright &copy; 2019 &mdash; 浪浪の家
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+	<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script>
+		// 初始化 Firebase
+		var config = {
+			apiKey: "AIzaSyB3J5E5AXszEz6_J2wWZcWFBpuA5U5A2DI",
+			authDomain: "newtest-518e8.firebaseapp.com",
+			databaseURL: "https://newtest-518e8.firebaseio.com",
+			storageBucket: "newtest-518e8.appspot.com",
+		};
+		firebase.initializeApp(config);
+
+		var login_error_func = function (error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			alert("登入失敗:" + errorMessage);
+		}
+		var login_success_func = function (error) {
+			alert("登入成功");
+			location.href = 'Home after.html';
+		}
+
+		$(document).ready(function () {
+			$("#login_user").click(function () {
+				var email = $('#login_email').val();
+				var password = $('#login_password').val();
+				firebase.auth().signInWithEmailAndPassword(email, password).then(login_success_func).catch(login_error_func);
+			});
+		});
+
+
+	</Script>
+
+
+
+
+
+</body>
+
+</html>
